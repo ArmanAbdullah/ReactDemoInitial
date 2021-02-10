@@ -4,6 +4,7 @@ import CommonForm from "./commonForm";
 import { IMovieModel } from "./model";
 
 const initialFieldValues : IMovieModel = {
+    id: 0,
     name: '',
     director: ''
 }

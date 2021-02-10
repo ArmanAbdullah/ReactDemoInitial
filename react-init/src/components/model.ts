@@ -1,5 +1,5 @@
 export interface IMovieModel {
-    id?: number;
+    id: number;
     name: string;
     director: string;
 }

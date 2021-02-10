@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect} from 'react';
 import { IMovieModel } from './model';
 
 const useForm = (initialFieldValues  : IMovieModel) => {
