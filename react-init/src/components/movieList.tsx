@@ -3,7 +3,8 @@ import { Grid, Paper, TableContainer, Table, TableHead, TableRow, TableCell, Tab
 import MovieForm from './movieForm';
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Link } from 'react-router-dom';
+import * as actions from "../actions/actions";
+import { connect } from "react-redux";
 import axios from 'axios';
 import { IMovieModel } from "./model";
 import EditMovie from "./editMovie";
@@ -13,13 +14,15 @@ const initialFieldValues : IMovieModel = {
     name: '',
     director: ''
 }
-const MovieList = ()=>{
+const MovieList = (props : any)=>{
     const [values , setValues] = useState<IMovieModel[]>([])
     const [currentId, setCurrentId] = useState<number>(0)
     const [movieData, setMovieData] = useState<IMovieModel>(initialFieldValues)
 
     useEffect(() => {
-        newFunction(setValues);  
+        console.log(props)
+        props.fetchAllDCandidates()
+        //newFunction(setValues);  
     }, [])//componentDidMount
 
     const handleEdit=(record: IMovieModel)=>{
@@ -98,14 +101,24 @@ const MovieList = ()=>{
     );
 }
 
-export default MovieList;
+const mapStateToProps = (values : IMovieModel[]) => ({
+    movieList: values
+})
+
+const mapActionToProps = {
+    fetchAllDCandidates: (dispatch) => actions.getAll()(dispatch),
+    deleteDCandidate: actions.Delete
+}
+export default connect(mapStateToProps,mapActionToProps) (MovieList);
 
 function newFunction(setValues: React.Dispatch<React.SetStateAction<IMovieModel[]>>) {
-    axios.get<IMovieModel[]>('http://localhost:60671/api/movie')
-        .then(response => {
-            setValues(response.data);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+
+    
+    // axios.get<IMovieModel[]>('http://localhost:60671/api/movie')
+    //     .then(response => {
+    //         setValues(response.data);
+    //     })
+    //     .catch(function (error) {
+    //         console.log(error);
+    //     });
 }
