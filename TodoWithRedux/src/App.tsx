@@ -8,24 +8,33 @@ import * as actions from './actions';
 import { EditNote } from './editNote';
 import { INote } from './model';
 
+export const initNote :INote = {
+  id : 0,
+  text : "",
+  writer : ""
+}
 
-function App() {
+interface AppProps{
+  handleLogout:()=>void
+}
+
+const App=(props:AppProps) =>{
   const [isEdit, setIsEdit]=useState(false);
-  const [notee, setNotee]=useState("");
+  const [notee, setNotee]=useState(initNote);
   const notes = useSelector<NotesState, NotesState["notes"]>((state) => state.notes)
   const dispatch=useDispatch();
 
-  const onAddNote=(note : string)=>{
+  const onAddNote=(note : INote)=>{
     dispatch(actions.CreateNote(note));
   }
-  const onEditNote=(note : string)=>{
-    dispatch(actions.EditNote(note,notee));
+  const onEditNote=(note : INote)=>{
+    dispatch(actions.EditNote(note));
   }
-  const onDeleteNote=(note : string)=>{
+  const onDeleteNote=(note : INote)=>{
     dispatch(actions.DeleteNote(note));
   }
 
-  const handleEdit=(note: string)=>{
+  const handleEdit=(note: INote)=>{
     setNotee(note)
     setIsEdit(true)
   }
@@ -36,16 +45,33 @@ function App() {
       <EditNote onSubmitSuccess={()=>setIsEdit(false)} editNote={onEditNote} noteToEdit={notee}/>:
     <AddNote addNewNote={onAddNote}/>}
     <hr/>
-    <ul>
+        <table>
+          <tr>
+            <th>Note Text</th>
+            <th> Writer</th>
+            <th> Action</th>
+          </tr>
+          {notes.map((note)=>
+          <tr key={note.id}>
+            <td>{note.text}</td>
+            <td>{note.writer}</td>
+            <td>
+              <button onClick={ () => { handleEdit(note) } } >Edit</button>
+              <button onClick={() => onDeleteNote(note)}>Delete</button>
+            </td>
+          </tr>
+      )}
+        </table>
+    {/* <ul>
       {notes.map((note)=>
-        <li key={note}>{note}
+        <li key={note.id}>{note}
         <button onClick={ () => { handleEdit(note) } } >Edit</button>
         <button
         onClick={() => onDeleteNote(note)}>Delete</button>
         </li>
       )}
       
-    </ul>
+    </ul> */}
     </div>
   );
 }

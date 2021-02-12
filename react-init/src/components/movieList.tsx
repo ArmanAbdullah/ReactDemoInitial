@@ -106,7 +106,7 @@ const mapStateToProps = (values : IMovieModel[]) => ({
 })
 
 const mapActionToProps = {
-    fetchAllDCandidates: (dispatch) => actions.getAll()(dispatch),
+    //fetchAllDCandidates: (dispatch) => actions.getAll()(dispatch),
     deleteDCandidate: actions.Delete
 }
 export default connect(mapStateToProps,mapActionToProps) (MovieList);
